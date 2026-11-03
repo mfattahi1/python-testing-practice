@@ -1,11 +1,20 @@
 def first_unique_char(text):
-    
-    ourDict={}
+    counts = {}
+
     for char in text:
-        ourDict[char] = ourDict.get(char,0) + 1
-    
-    for key,value in ourDict.items():
-        if value ==1:
-            return key
+        counts[char] = counts.get(char, 0) + 1
 
+    for char, count in counts.items():
+        if count == 1:
+            return char
 
+    return None
+
+assert first_unique_char("aabbcde") == "c"
+assert first_unique_char("aabbcc") is None
+assert first_unique_char("swiss") == "w"
+assert first_unique_char("") is None
+assert first_unique_char("python") == "p"
+assert first_unique_char("a") == "a"
+
+print("All tests passed!")
