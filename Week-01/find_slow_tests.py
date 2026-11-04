@@ -1,20 +1,33 @@
-tests = [
-    {"id": "T01", "time": 100},
-    {"id": "T02", "time": 250},
-    {"id": "T03", "time": 180},
-    {"id": "T04", "time": 300}
+results = [
+    {"id": "T01", "status": "PASS"},
+    {"id": "T02", "status": "FAIL"},
+    {"id": "T03", "status": "PASS"},
+    {"id": "T04", "status": "TIMEOUT"},
+    {"id": "T05", "status": "FAIL"}
 ]
 
-def find_slow_tests(tests, threshold):
-    slow_tests = []
-    for i in tests:
-        if i["time"] > threshold:
-            slow_tests.append(i["id"])
+def group_tests_by_status(results):
+    grouped = {}
 
-    return slow_tests
+    for test in results:
+        status = test["status"]
+        test_id = test["id"]
 
-assert find_slow_tests(tests, 200) == ["T02", "T04"]
-assert find_slow_tests(tests, 300) == []
-assert find_slow_tests([], 200) == []
-assert find_slow_tests(tests, 100) == ["T02", "T03", "T04"]
-print("All fine!")
+        if status not in grouped:
+            grouped[status] = []
+
+        grouped[status].append(test_id)
+
+    return grouped
+    
+assert group_tests_by_status(results) == {
+    "PASS": ["T01", "T03"],
+    "FAIL": ["T02", "T05"],
+    "TIMEOUT": ["T04"]
+}
+
+assert group_tests_by_status([]) == {}
+
+print("All tests passed!")
+
+print(group_tests_by_status(results))
