@@ -1,27 +1,18 @@
-def validate_age(age):
-    try:
-        
-        if (age >= 18 and age <= 65) and isinstance(age,int):
-            return True
-        else:
-            return False
-
-        
-    except TypeError:
+def validate_test_result(result):
+    if type(result) is not dict:
         return False
+    elif "status" not in result or "time" not in result:
+        return False
+    elif result["status"] in ("PASS", "FAIL", "TIMEOUT") and type(result["time"]) is int and result["time"] >=0:
+        return True
+    return False
 
-
-assert validate_age(18) is True
-assert validate_age(65) is True
-assert validate_age(30) is True
-
-assert validate_age(17) is False
-assert validate_age(66) is False
-assert validate_age(0) is False
-
-assert validate_age("25") is False
-assert validate_age(18.5) is False
-assert validate_age(None) is False
-assert validate_age(True) is False
-
-print("All tests passed!")
+assert validate_test_result({"status": "PASS", "time": 100}) is True
+assert validate_test_result({"status": "FAIL", "time": 0}) is True
+assert validate_test_result({"status": "ERROR", "time": 100}) is False
+assert validate_test_result({"status": "PASS"}) is False
+assert validate_test_result({"status": "PASS", "time": -5}) is False
+assert validate_test_result({"status": "PASS", "time": "100"}) is False
+assert validate_test_result({"status": "PASS", "time": True}) is False
+assert validate_test_result([]) is False
+print("All clear!")
