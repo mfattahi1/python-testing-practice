@@ -1,1 +1,1 @@
-number = 0
+print(new_list)
